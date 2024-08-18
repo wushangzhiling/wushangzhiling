@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />  <!-- 设置文档字符集为UTF-8 -->  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />  <!-- 让IE浏览器使用最新渲染引擎 -->  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <!-- 使网页在不同设备上自适应 -->  
+    <title>Document</title>
+    <style>
+    .dati {
+      display: flex; /* 使用Flexbox布局使其子项横向排列 */  
+      margin: 0; /* 去掉浏览器默认边距 */  
+      font-family: "Poppins", sans-serif; /* 设置字体为Poppins，后备为sans-serif */  
+      background: rgba(227, 228, 226, 0.91);  /* 设置背景颜色 */  
+      width: auto;
+      height: 100vh;
+      margin: auto;
+      padding: 1px;
+      border: 0;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }/**全网页的结构**/
+
+    .ying{
+        box-shadow: 8px 8px 8px rgb(0, 0, 0,0.3),
+               -8px -8px 8px rgba(253, 253, 253, 0.7);
+        border-radius: 23px;
+    }/**阴影效果**/
+
+    .logo{
+      width: 10%;
+      height: 12%;
+      margin: 10px;
+      border: 0;
+      padding: 10px;
+      overflow: hidden;
+    }/**logo效果**/
+
+    .tou{
+
+      width: 70%;
+      height: 12%;
+      margin: 12px;
+      border: 0px;
+      padding: 0px;
+      overflow: hidden;
+      transition: transform 0.1s; /* 添加过渡效果 */ 
+    }
+    .tou:hover {  
+    transform: scale(1.1); /* 鼠标悬停时放大效果 */  
+    }  /**头部菜单**/
+
+    .liebiao {
+      width: 15%;
+      height: 100%;
+      margin: 12px;
+      border: 8px;
+      padding: 12px;
+    }/**列表效果**/
+
+    
+
+
+    /**这下面是选项效果的css**/
+#menu {     width: 13%;
+            height: 100%;
+            margin: 12px;
+            border: 8px;
+            padding: 12px;
+          }  
+        ul {  
+            display: flex;  /* 使用flex布局 */  
+            flex-direction: column;  /* 列表垂直排列 */  
+            gap: 30px;  /* 列表项之间的间隔 */  
+            padding: 0;  /* 去掉内边距 */  
+            list-style: none;  /* 去掉列表项的默认样式 */  
+        }  
+        li {  
+            position: relative;  /* 相对定位以便使用绝对定位的子元素 */  
+            cursor: pointer; /* 鼠标悬停时光标变为手型 */  
+        }  
+        li div {  
+            font-size: 3.0vw;  /* 文本大小设为2em */  
+            line-height: 1.5em;  /* 行高设为1.5em */  
+            letter-spacing: 2px;  /* 字母间距设置为2像素 */  
+            text-transform: uppercase;  /* 文本转换为大写 */  
+            color: transparent;  /* 初始文本颜色为透明 */  
+            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.5);  /* 添加描边以增强可读性 */  
+            white-space: nowrap;  /* 防止文本换行 */  
+            transition: color 0.3s, -webkit-text-stroke 0.3s;  /* 过渡特效 */  
+        }  
+        li div::before {  
+            content: attr(data-text);  /* 使用data-text属性作为伪元素的内容 */  
+            position: absolute;  /* 绝对定位 */  
+            color: var(--clr);  /* 使用自定义属性设置颜色 */  
+            width: 0;  /* 初始宽度为0 */  
+            overflow: hidden;  /* 隐藏溢出内容 */  
+            transition: width 1s;  /* 宽度变化时的过渡效果 */  
+            -webkit-text-stroke: 1px var(--clr);  /* 添加描边颜色 */  
+            white-space: nowrap;  /* 防止文本换行 */  
+        }  
+        li div:hover::before {  
+            width: 180%;  /* 鼠标悬停时增加宽度，使文本显示出来 */  
+            filter: drop-shadow(0 0 20px var(--clr));  /* 添加阴影效果以增强显示 */  
+        }  
+        li.active div {  
+            color: transparent; /* 激活状态下保持原文本隐藏，以留出内容光影效果 */  
+        }  
+        li.active div::before {  
+            width: 130%; /* 激活状态时伪元素宽度变化 */  
+            filter: drop-shadow(0 0 20px var(--clr)); /* 保持阴影效果 */  
+        }  
+        #content {  
+            flex-grow: 1;  /* 内容区域自适应宽度，填充剩余空间 */  
+            padding: 20px;  /* 内边距20像素 */  
+            color: black;  /* 文本颜色设为黑色，提高可读性 */  
+        }  
+        .tab-content {  
+            display: none;  /* 默认隐藏所有标签内容 */  
+        }  
+        .tab-content.active {  
+            display: flex;
+            justify-content: baseline;
+            justify-content: left;
+            text-align: center;  /* 激活标签时显示内容 */  
+        } 
+
+        /**艺术字体效果**/
+        .artistic-text {   
+            font-weight: bold;  
+            font-size: 48px; /* 可根据需要调整字体大小 */  
+            background: linear-gradient(0deg, #a0a0a0, #040404); 
+            background-clip: border-box; 
+            -webkit-background-clip: text;  
+            -webkit-text-fill-color: transparent;  
+        }
+
+/**下面是扫雷游戏的css**/
+        #game {  
+            display: grid;  
+            grid-template-columns: repeat(10, 40px);  
+            grid-gap: 2px; 
+        }  
+        .cell {  
+            width: 40px;  
+            height: 40px;  
+            background-color: #ddd;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-size: 20px;  
+            font-weight: bold;  
+            border: 1px solid #999;  
+            cursor: pointer;  
+        }  
+        .revealed {  
+            background-color: #fff;  
+            cursor: default;  
+        }  
+        .mine {  
+            background-color: red;  
+        }  
+        .flagged {  
+            background-color: yellow;  
+        }  
+        #message {  
+            margin: 20px 0;  
+            font-size: 24px;  
+            font-weight: bold;  
+        } 
+
+        /**下面是文字效果**/
+        .rainbow {    
+            color: black; /* 初始字体颜色为黑色 */  
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;  
+        }  
+
+        .rainbow:hover {  
+            color: transparent; /* 悬停时隐藏文本颜色 */  
+            background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);  
+            background-clip: text;  
+            -webkit-background-clip: text;  
+            background-size: 200% 200%; /* 背景渐变变化效果 */  
+            animation: rainbowAnimation 2s linear infinite; /* 持续动画 */  
+        }  
+
+        @keyframes rainbowAnimation {  
+            0% {  
+                background-position: 0% 50%;  
+            }  
+            100% {  
+                background-position: 100% 50%;  
+            }  
+        } 
+
+        /**雪花效果**/
+        .snowflake {  
+            position: absolute;  
+            top: -10px; /* 从屏幕顶部开始 */  
+            color: white; /* 雪花颜色 */  
+            font-size: 1em;  
+            opacity: 0.7;  
+            pointer-events: none; /* 使雪花不影响鼠标事件 */  
+            animation: fall linear infinite; /* 让雪花不停地下落 */  
+        }  
+
+        @keyframes fall {  
+            0% {  
+                transform: translateY(0);  
+            }  
+            100% {  
+                transform: translateY(100vh); /* 到达屏幕底部 */  
+            }  
+        } 
+    </style>
+</head>
+
+<!--上面是CSS主体，下面是网页本体-->
+
+<body class="dati">
+
+   
+      <div  class="logo">
+        <a href="https://www.wanhanzhiyao.com/" target="_blank" rel="noopener noreferrer">
+        <img alt="万汉" src="https://jobsys.oss-cn-shenzhen.aliyuncs.com/data/uploads/com/logo/2018/01/04/c803cc389f2d607cdda43dc68512d3be.png"
+           style="width: 100%;
+                  height: 60%;">
+        </a><br>
+        
+      </div><!--logo图片效果主体-->
+
+    <div class="tou" >
+        <div style="font-size: 4vw;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    letter-spacing: 2vw;
+                    text-shadow: 1px 1px 1px rgb(60, 60, 60),
+                                 2px 2px 2px rgb(70, 70, 70),
+                                 3px 3px 1px rgb(81, 81, 81),
+                                 4px 4px 1px rgb(90, 90, 90),
+                                 5px 5px 1px rgb(100, 100, 100);
+                    color: rgb(0, 0, 0);"
+                                 
+             type="button"
+             onclick="alert('欢迎')"
+             class="caidan">合成实验室</div>
+    </div>
+
+    <div id="menu" class="ying">  <!-- 菜单容器 -->  
+        <ul>  <!-- 列表容器 -->  
+            <li style="--clr: #00ade1" onclick="setActive(this, 'tab1')">  <!-- 第一个菜单项 -->  
+                <div data-text="基本搜索">基本搜索</div>  <!-- 菜单项的内容，同时设置data-text属性 -->  
+            </li>  
+            <li style="--clr: #ff6493" onclick="setActive(this, 'tab2')">  <!-- 第二个菜单项 -->  
+                <div data-text="有机合成">有机合成</div>  <!-- 处理第二个页面的内容 -->  
+            </li>  
+            <li style="--clr: #ffdd1c" onclick="setActive(this, 'tab3')">  <!-- 第三个菜单项 -->  
+                <div data-text="专利文献">专利文献</div>  <!-- 第三个标签页的内容 -->  
+            </li>  
+            <li style="--clr: #dc00d4" onclick="setActive(this, 'tab4')">  <!-- 第四个菜单项 -->  
+                <div data-text="放松一下">放松一下</div>  <!-- 第四个标签页的内容 -->  
+            </li>  
+        </ul>  
+    </div>  
+    <div id="content" >  <!-- 内容容器 -->
+
+        <div id="tab1" class="tab-content active" style="font-size: 3vw;">  <!-- 第一个标签的内容，初始状态设为激活 -->  
+
+
+              <div style="width:70%; height: 100%;" >              
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 百科搜索
+                </div>
+                 <a href="https://dir.scmor.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    思谋导航
+                 </a><br>
+                 <a href="https://metaso.cn/?s=lms2" target="_blank" class="rainbow"   rel="noopener noreferrer">
+                    秘塔AI搜索
+                 </a><br>
+                 <a href="https://www.aminer.cn/" target="_blank" class="rainbow"   rel="noopener noreferrer">
+                    AI:miner
+                 </a><br>
+                 <a href="https://kimi.moonshot.cn/" target="_blank" class="rainbow"   rel="noopener noreferrer">
+                    AI:kimi(要登录) 
+                 </a><br>
+                 <a href="https://www.yahoo.co.jp/" target="_blank" class="rainbow"   rel="noopener noreferrer">
+                    雅虎
+                 </a><br>
+                 <a href="https://www.chemicalbook.com/ProductIndex.aspx" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    Chemicalbook
+                 </a><br>
+                 <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/047084289X" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    有机合成试剂参考书
+                 </a><br>
+                 <a href="https://www.ghs-msds.cn/msds_list/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    化合物Msds
+                 </a><br>
+                 <a href="https://ptable.com/#" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    元素周期表
+                 </a><br>
+                 <a href="http://www.danlehnherr.com/documents/evans_pKa_table.pdf" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    pKa表1
+                 </a><br>
+                 <a href="https://organicchemistrydata.org/hansreich/resources/pka/pka_data/pka-compilation-williams.pdf" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    pKa表2
+                 </a><br>
+                 <a href="https://labs.chem.ucsb.edu/zakarian/armen/11---bonddissociationenergy.pdf" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    化学键能表
+                 </a><br>
+                 <a href="https://organicchemistrydata.org/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    有机化学数据
+                 </a><br>
+                 <a href="https://cheminfographic.wordpress.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    精美图表
+                 </a><br>
+                 
+              </div><!--左边-->
+
+            <div style="width: 70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 科学上网
+                </div>
+                 <a href="https://www.google.com" target="_blank " class="rainbow" rel="noopener noreferrer">
+                    Google
+                 </a><br>
+                 <a href="https://www.wikipedia.org/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    wiki百科
+                 </a><br>
+                 <a href="https://chatgpt.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    chatgpt
+                 </a><br><br>
+                 <div style="font-size: 4vw;" class="artistic-text" > 
+                 论坛消息
+                 </div>
+                 <a href="https://sites.arizona.edu/njardarson-lab/custom-posters/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    药物结构海报
+                 </a><br>
+                 <a href="https://www.chemrss.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    化学经纬
+                 </a><br>
+                 <a href="https://cn.chem-station.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    化学空间
+                 </a><br>
+                 <a href="https://muchong.com/bbs/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    小木虫
+                 </a><br>
+                 
+
+              </div><!--右边-->
+        </div>
+        <!--上面是第一个标签-->
+        
+        <div id="tab2" class="tab-content" style="font-size: 3vw;">  <!-- 第二个标签的内容 -->  
+          <div style="width:70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 机理查询
+                </div>
+                 <a href="https://www.reaxys.com/#/search/quick" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    Reaxys
+                 </a><br>
+                 <a href="https://www.organic-chemistry.org/synthesis/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    Organic Synthesis Search
+                 </a><br>
+                 <a href="http://www.orgsyn.org/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    Organic Syntheses
+                 </a><br>
+                 <a href="http://cssp.chemspider.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    Chemspider
+                 </a><br>
+                 <a href="https://www.drugfuture.com/synth/synth_query.asp" target="_blank" class="rainbow" rel="noopener noreferrer">
+                    药物合成数据库
+                 </a><br>
+
+          </div><!--左边-->
+
+          <div style="width:70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 探索学习
+                </div>
+                 <a href="https://chem.libretexts.org/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   Libretexts
+                 </a><br>
+                 <a href="https://pubs.acs.org/journal/oprdfk" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   有机工艺与开发
+                 </a><br>
+                 <a href="https://www.cde.org.cn/ichWeb/guideIch/toGuideIch/0/1" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   ICH指导原则
+                 </a><br>
+                 <a href="https://www.drugfuture.com/Organic_Name_Reactions/index.html" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   有机人名反应
+                 </a><br>
+                 <a href="https://www.icourse163.org/#" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   中国大学MOOC
+                 </a><br>
+                 <a href="https://www.dxhx.pku.edu.cn/CN/1000-8438/home.shtml" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   大学化学
+                 </a><br>
+                 <a href="https://zh.khanacademy.org/science/organic-chemistry" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   可汗学院
+                 </a><br>
+                 <a href="https://xray.chem.uwo.ca/crystal_growing/GrowXtal.html" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   单晶培养
+                 </a><br>
+                 
+          </div><!--右边-->
+        </div>
+        <!--上面是第二个标签-->
+
+        <div id="tab3" class="tab-content" style="font-size: 3vw;">  <!-- 第三个标签的内容 -->  
+                <div style="width:70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 文献查询
+                </div>
+                 <a href="https://www.scihub.net.cn/sci-hub/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   Sci-hub
+                 </a><br>
+                 <a href="https://www.x-mol.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   X-mod
+                 </a><br>
+                 <a href="https://www.x-mol.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   X-mod
+                 </a><br>
+                 <a href="https://www.sciencedirect.com/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   Sciencedirect
+                 </a><br>
+                 <a href="https://pubs.acs.org/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   Acs
+                 </a><br>
+                </div><!--左边-->
+                
+                <div style="width:70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 专利查询
+                </div>
+                 <a href="https://www.fda.gov/drugs/development-approval-process-drugs/drug-approvals-and-databases" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   FDA：药品审批和数据库
+                 </a><br>
+                 <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   Pubchem
+                 </a><br>
+                 <a href="https://worldwide.espacenet.com/?locale=en_EP" target="_blank" class="rainbow" rel="noopener noreferrer"> 
+                   世界专利
+                 </a><br>
+                 <a href="https://www.patenthub.cn/" target="_blank" class="rainbow" rel="noopener noreferrer">
+                   中国专利
+                 </a><br>
+                </div><!--右边-->
+        </div>
+        <!--上面是第三个标签-->  
+
+
+
+        <div id="tab4" class="tab-content">  <!-- 第四个标签的内容 -->  
+                <div style="justify-content: center;width:70%; height: 100%;" >
+<button id="restartBtn">重开游戏</button>  
+<div id="message"></div>  
+<div id="game"></div>  
+                </div><!--左边-->
+
+                <div style="justify-content: center;width:100%; height: 100%;" style="font-size: 3vw;">
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 娱乐一下
+                </div>
+                 <a href="https://conwnet.github.io/huarongdao/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   华容道
+                 </a><br>
+                 <a href="https://www.minesweeper.cn/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   扫雷
+                 </a><br>
+                 <a href="https://chess.z3web.cn/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   象棋
+                 </a><br>
+                 <a href="https://www.playok.com/zh/gomoku/#" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   五子棋
+                 </a><br>
+                 <a href="https://www.101weiqi.cn/play/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   围棋
+                 </a><br>
+                 <a href="https://www.playok.com/zh/ludo/" target="_blank" class="rainbow" style="font-size: 3vw;"  rel="noopener noreferrer">
+                   飞行棋
+                 </a><br><br>
+                <div style="font-size: 4vw;" class="artistic-text"> 
+                 实用工具
+                </div>
+                 <a href="https://zoom.earth/maps/satellite/#view=35.5,101.9,4z" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   实时天气图
+                 </a><br>
+                 <a href="https://darkmap.cn/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   全球光污染图
+                 </a><br>
+                 <a href="https://zenvideo.qq.com/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   腾讯智影
+                 </a><br>
+                 <a href="https://remaker.ai/cn" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   AI图片工具
+                 </a><br>
+                 <a href="https://www.ilovepdf.com/zh-cn" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   PDF工具
+                 </a><br>
+                 <a href="https://www.geogebra.org/?lang=zh-CN" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   Geogebra
+                 </a><br>
+                 <a href="https://www.99cankao.com/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   九九计算器
+                 </a><br>
+                 <a href="https://github.com/" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   Github
+                 </a><br>
+                 <a href="https://vscode.dev/?vscode-lang=zh-cn" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
+                   Vscode
+                 </a><br>
+                </div><!--右边-->
+
+<!--下面是扫雷游戏JS-->
+<script>  
+    const rows = 10;  
+    const cols = 10;  
+    const mineCount = 10;  
+    let board = [];  
+    let revealedCount = 0;  
+    let gameActive = true;  
+
+    function initializeBoard() {  
+        board = Array.from({ length: rows }, () =>  
+            Array.from({ length: cols }, () => ({ mine: false, adjacent: 0, revealed: false, flagged: false }))  
+        );  
+
+        let minesPlaced = 0;  
+        while (minesPlaced < mineCount) {  
+            const r = Math.floor(Math.random() * rows);  
+            const c = Math.floor(Math.random() * cols);  
+            if (!board[r][c].mine) {  
+                board[r][c].mine = true;  
+                minesPlaced++;  
+            }  
+        }  
+
+        for (let r = 0; r < rows; r++) {  
+            for (let c = 0; c < cols; c++) {  
+                if (board[r][c].mine) {  
+                    for (let i = -1; i <= 1; i++) {  
+                        for (let j = -1; j <= 1; j++) {  
+                            if (r + i >= 0 && r + i < rows && c + j >= 0 && c + j < cols) {  
+                                board[r + i][c + j].adjacent++;  
+                            }  
+                        }  
+                    }  
+                }  
+            }  
+        }  
+    }  
+
+    function createCell(r, c) {  
+        const cell = document.createElement('div');  
+        cell.classList.add('cell');  
+        cell.dataset.r = r;  
+        cell.dataset.c = c;  
+
+        cell.addEventListener('click', () => revealCell(r, c));  
+        cell.addEventListener('contextmenu', (e) => {  
+            e.preventDefault();  
+            flagCell(cell);  
+        });  
+
+        return cell;  
+    }  
+
+    function renderBoard() {  
+        const gameElement = document.getElementById('game');  
+        gameElement.innerHTML = '';  
+        for (let r = 0; r < rows; r++) {  
+            for (let c = 0; c < cols; c++) {  
+                const cell = createCell(r, c);  
+                gameElement.appendChild(cell);  
+            }  
+        }  
+    }  
+
+    function revealCell(r, c) {  
+        if (!gameActive || board[r][c].revealed || board[r][c].flagged) return;  
+
+        board[r][c].revealed = true;  
+        revealedCount++;  
+
+        const cell = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);  
+        cell.classList.add('revealed');  
+
+        if (board[r][c].mine) {  
+            cell.classList.add('mine');  
+            animateBang(cell);  
+            gameActive = false;  
+            document.getElementById('message').innerText = '游戏失败！';  
+            revealAllMines();  
+            return;  
+        }  
+
+        cell.innerText = board[r][c].adjacent > 0 ? board[r][c].adjacent : '';  
+
+        if (revealedCount === (rows * cols - mineCount)) {  
+            gameActive = false;  
+            document.getElementById('message').innerText = '恭喜，你赢了！';  
+        }  
+
+        if (board[r][c].adjacent === 0) {  
+            for (let i = -1; i <= 1; i++) {  
+                for (let j = -1; j <= 1; j++) {  
+                    if (r + i >= 0 && r + i < rows && c + j >= 0 && c + j < cols) {  
+                        revealCell(r + i, c + j);  
+                    }  
+                }  
+            }  
+        }  
+    }  
+
+    function flagCell(cell) {  
+        const r = cell.dataset.r;  
+        const c = cell.dataset.c;  
+
+        if (!gameActive || board[r][c].revealed) return;  
+
+        board[r][c].flagged = !board[r][c].flagged;  
+        cell.classList.toggle('flagged');  
+    }  
+
+    function revealAllMines() {  
+        board.forEach((row, r) => {  
+            row.forEach((cell, c) => {  
+                if (cell.mine) {  
+                    const mineCell = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);  
+                    mineCell.classList.add('mine');  
+                }  
+            });  
+        });  
+    }  
+
+    function animateBang(cell) {  
+        cell.classList.add('bang');  
+        setTimeout(() => cell.classList.remove('bang'), 500);  
+    }  
+
+    document.getElementById('restartBtn').addEventListener('click', () => {  
+        gameActive = true;  
+        revealedCount = 0;  
+        document.getElementById('message').innerText = '';  
+        initializeBoard();  
+        renderBoard();  
+    });  
+
+    function startGame() {  
+        initializeBoard();  
+        renderBoard();  
+    }  
+
+    startGame();  
+</script>
+        </div>  
+    </div>  
+
+    <script> //选项点击动画效果 
+        function setActive(selectedLi, tabId) {  
+            const menuItems = document.querySelectorAll('#menu li');  
+            menuItems.forEach(li => li.classList.remove('active')); // 移除所有选项的激活状态  
+            selectedLi.classList.add('active'); // 添加选定选项的激活状态  
+
+            const tabContents = document.querySelectorAll('.tab-content');  
+            tabContents.forEach(tab => tab.classList.remove('active')); // 隐藏所有内容  
+            document.getElementById(tabId).classList.add('active'); // 显示对应内容  
+        }  
+    </script>
+
+    <script>  
+    // 创建雪花的数量  
+    const snowflakeCount = 1;  
+
+    // 创建雪花元素并添加到页面  
+    for (let i = 0; i < snowflakeCount; i++) {  
+        const snowflake = document.createElement('div');  
+        snowflake.classList.add('snowflake');  
+        snowflake.innerHTML = '❄'; // 雪花的内容可以是字符或图像  
+
+        // 随机设置位置、动画持续时间和延迟  
+        snowflake.style.left = Math.random() * 100 + 'vw';  
+        snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'em'; // 随机大小  
+        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 随机动画时间  
+        snowflake.style.animationDelay = Math.random() * 5 + 's'; // 随机延迟时间  
+        
+        document.body.appendChild(snowflake);  
+    }  
+</script>  
+</body>
+</html>
