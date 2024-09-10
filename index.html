@@ -37,7 +37,7 @@
 
     .tou{
 
-      width: 70%;
+      width: 80%;
       height: 12%;
       margin: 12px;
       border: 0px;
@@ -134,39 +134,6 @@
             -webkit-text-fill-color: transparent;  
         }
 
-/**下面是扫雷游戏的css**/
-        #game {  
-            display: grid;  
-            grid-template-columns: repeat(10, 40px);  
-            grid-gap: 2px; 
-        }  
-        .cell {  
-            width: 40px;  
-            height: 40px;  
-            background-color: #ddd;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            font-size: 20px;  
-            font-weight: bold;  
-            border: 1px solid #999;  
-            cursor: pointer;  
-        }  
-        .revealed {  
-            background-color: #fff;  
-            cursor: default;  
-        }  
-        .mine {  
-            background-color: red;  
-        }  
-        .flagged {  
-            background-color: yellow;  
-        }  
-        #message {  
-            margin: 20px 0;  
-            font-size: 24px;  
-            font-weight: bold;  
-        } 
 
         /**下面是文字效果**/
         .rainbow {    
@@ -449,14 +416,8 @@
 
 
 
-        <div id="tab4" class="tab-content">  <!-- 第四个标签的内容 -->  
-                <div style="justify-content: center;width:70%; height: 100%;" >
-<button id="restartBtn">重开游戏</button>  
-<div id="message"></div>  
-<div id="game"></div>  
-                </div><!--左边-->
-
-                <div style="justify-content: center;width:100%; height: 100%;" style="font-size: 3vw;">
+        <div id="tab4" class="tab-content" style="font-size: 3vw;">  <!-- 第四个标签的内容 -->  
+                <div style="width:70%; height: 100%;">
                 <div style="font-size: 4vw;" class="artistic-text"> 
                  娱乐一下
                 </div>
@@ -477,8 +438,11 @@
                  </a><br>
                  <a href="https://www.playok.com/zh/ludo/" target="_blank" class="rainbow" style="font-size: 3vw;"  rel="noopener noreferrer">
                    飞行棋
-                 </a><br><br>
-                <div style="font-size: 4vw;" class="artistic-text"> 
+                 </a><br>
+                </div><!--左边-->
+
+                <div style="width:70%; height: 100%;">
+                <div style="font-size: 4vw;" class="artistic-text">  
                  实用工具
                 </div>
                  <a href="https://zoom.earth/maps/satellite/#view=35.5,101.9,4z" target="_blank" class="rainbow" style="font-size: 3vw;" rel="noopener noreferrer">
@@ -510,150 +474,8 @@
                  </a><br>
                 </div><!--右边-->
 
-<!--下面是扫雷游戏JS-->
-<script>  
-    const rows = 10;  
-    const cols = 10;  
-    const mineCount = 10;  
-    let board = [];  
-    let revealedCount = 0;  
-    let gameActive = true;  
 
-    function initializeBoard() {  
-        board = Array.from({ length: rows }, () =>  
-            Array.from({ length: cols }, () => ({ mine: false, adjacent: 0, revealed: false, flagged: false }))  
-        );  
-
-        let minesPlaced = 0;  
-        while (minesPlaced < mineCount) {  
-            const r = Math.floor(Math.random() * rows);  
-            const c = Math.floor(Math.random() * cols);  
-            if (!board[r][c].mine) {  
-                board[r][c].mine = true;  
-                minesPlaced++;  
-            }  
-        }  
-
-        for (let r = 0; r < rows; r++) {  
-            for (let c = 0; c < cols; c++) {  
-                if (board[r][c].mine) {  
-                    for (let i = -1; i <= 1; i++) {  
-                        for (let j = -1; j <= 1; j++) {  
-                            if (r + i >= 0 && r + i < rows && c + j >= 0 && c + j < cols) {  
-                                board[r + i][c + j].adjacent++;  
-                            }  
-                        }  
-                    }  
-                }  
-            }  
-        }  
-    }  
-
-    function createCell(r, c) {  
-        const cell = document.createElement('div');  
-        cell.classList.add('cell');  
-        cell.dataset.r = r;  
-        cell.dataset.c = c;  
-
-        cell.addEventListener('click', () => revealCell(r, c));  
-        cell.addEventListener('contextmenu', (e) => {  
-            e.preventDefault();  
-            flagCell(cell);  
-        });  
-
-        return cell;  
-    }  
-
-    function renderBoard() {  
-        const gameElement = document.getElementById('game');  
-        gameElement.innerHTML = '';  
-        for (let r = 0; r < rows; r++) {  
-            for (let c = 0; c < cols; c++) {  
-                const cell = createCell(r, c);  
-                gameElement.appendChild(cell);  
-            }  
-        }  
-    }  
-
-    function revealCell(r, c) {  
-        if (!gameActive || board[r][c].revealed || board[r][c].flagged) return;  
-
-        board[r][c].revealed = true;  
-        revealedCount++;  
-
-        const cell = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);  
-        cell.classList.add('revealed');  
-
-        if (board[r][c].mine) {  
-            cell.classList.add('mine');  
-            animateBang(cell);  
-            gameActive = false;  
-            document.getElementById('message').innerText = '游戏失败！';  
-            revealAllMines();  
-            return;  
-        }  
-
-        cell.innerText = board[r][c].adjacent > 0 ? board[r][c].adjacent : '';  
-
-        if (revealedCount === (rows * cols - mineCount)) {  
-            gameActive = false;  
-            document.getElementById('message').innerText = '恭喜，你赢了！';  
-        }  
-
-        if (board[r][c].adjacent === 0) {  
-            for (let i = -1; i <= 1; i++) {  
-                for (let j = -1; j <= 1; j++) {  
-                    if (r + i >= 0 && r + i < rows && c + j >= 0 && c + j < cols) {  
-                        revealCell(r + i, c + j);  
-                    }  
-                }  
-            }  
-        }  
-    }  
-
-    function flagCell(cell) {  
-        const r = cell.dataset.r;  
-        const c = cell.dataset.c;  
-
-        if (!gameActive || board[r][c].revealed) return;  
-
-        board[r][c].flagged = !board[r][c].flagged;  
-        cell.classList.toggle('flagged');  
-    }  
-
-    function revealAllMines() {  
-        board.forEach((row, r) => {  
-            row.forEach((cell, c) => {  
-                if (cell.mine) {  
-                    const mineCell = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);  
-                    mineCell.classList.add('mine');  
-                }  
-            });  
-        });  
-    }  
-
-    function animateBang(cell) {  
-        cell.classList.add('bang');  
-        setTimeout(() => cell.classList.remove('bang'), 500);  
-    }  
-
-    document.getElementById('restartBtn').addEventListener('click', () => {  
-        gameActive = true;  
-        revealedCount = 0;  
-        document.getElementById('message').innerText = '';  
-        initializeBoard();  
-        renderBoard();  
-    });  
-
-    function startGame() {  
-        initializeBoard();  
-        renderBoard();  
-    }  
-
-    startGame();  
-</script>
-        </div>  
-    </div>  
+  
 
     <script> //选项点击动画效果 
         function setActive(selectedLi, tabId) {  
